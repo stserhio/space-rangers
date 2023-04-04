@@ -9,6 +9,14 @@ export default class Background{
         this.dy = this.image.height - this.game.canvas.height
         this.start = this.image.height - this.game.canvas.height
 
+        this.audio = new Audio('../sounds/bg.mp3')
+        this.playSound()
+
+    }
+
+    playSound(){
+        // this.audio.volume = 0.6
+        this.audio.play()
     }
 
     update(dt){

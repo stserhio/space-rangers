@@ -15,7 +15,7 @@ export default class Asteroid {
         }
 
         this.velocity = {
-            y:  Math.random() * 10 + 2
+            y:  Math.random() * 20 + 2
         }
 
         this.hitbox = {

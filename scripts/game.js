@@ -4,6 +4,7 @@ import Background from "./backg.js"
 import Player from "./player.js"
 import Asteroid from "./asteroids.js"
 import Explosion from "./explosion.js"
+import ExitScene from "./exit.js"
 
 export default class GameScene{
     constructor(game){
@@ -14,6 +15,8 @@ export default class GameScene{
         this.explosions = []
         this.count = 0
         this.Init()
+
+        
     }
 
     Init(){
@@ -23,6 +26,20 @@ export default class GameScene{
         this.background = new Background(this.game)
         this.player = new Player(this.game)
 
+        this.music = document.getElementById('sound-bg')
+        this.playSound()
+
+    }
+
+    playSound(){
+        this.music.volume = 0.3
+        this.music.loop = true
+        this.music.play()
+    }
+
+    stopSound(){
+        this.music.pause()
+        this.music.currentTime = 0 
     }
     
     update(dt){
@@ -44,7 +61,7 @@ export default class GameScene{
         this.background.update(dt)
         this.player.update(dt)
 
-        if(this.count > 20){
+        if(this.count > 10){
             this.asteroids.push(new Asteroid(this.game))
             this.count = 0
         }
@@ -74,6 +91,18 @@ export default class GameScene{
                     }
                 
                 })
+
+                if(
+                    asteroid.hitbox.x < this.player.hitbox.x + this.player.hitbox.w &&
+                    asteroid.hitbox.x + asteroid.hitbox.w > this.player.hitbox.x &&
+                    asteroid.hitbox.y < this.player.hitbox.y + this.player.hitbox.h &&
+                    asteroid.hitbox.y + asteroid.hitbox.h > this.player.hitbox.y
+                ){
+                    console.log('Stolknovenie true');
+                    this.game.setScene(ExitScene);
+                }
+
+
             }
             
             
@@ -88,6 +117,7 @@ export default class GameScene{
         })
 
         if(this.game.checkKeyPress('Escape')){
+            this.stopSound()
             this.game.setScene(MenuScene);
         }
         this.count++
